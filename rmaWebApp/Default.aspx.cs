@@ -46,12 +46,12 @@ namespace rmaWebApp
 
             foreach (CompEntity entity in rmaCompTable.ExecuteQuery(query))
             {
-                Response.Write("<br />" + entity.PartitionKey);
+                //Response.Write("<br />" + entity.PartitionKey);
                 Response.Write("<br />" + entity.RowKey);
                 Response.Write("<br />" + entity.Amount);
             }
 
-            Response.Write("Hello");
+            //Response.Write("Hello");
         }
     }
 }
