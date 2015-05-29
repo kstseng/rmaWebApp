@@ -21,13 +21,13 @@ namespace rmaWebApp
                 this.RowKey = Date;
             }
             public CompEntity() { }
-            public string Amount { get; set; }
+            public string IW { get; set; }
+            public string All { get; set; }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string compName = "1000003455";
-            string Date = "201501";
+            string compName = "1420027099";
             // Retrieve the storage account from the connection string.
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
                 ConfigurationManager.AppSettings["StorageConnectionString"]);
@@ -36,10 +36,7 @@ namespace rmaWebApp
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
             // Create the CloudTable object that represents the table.
-            CloudTable rmaCompTable = tableClient.GetTableReference("rmaForecastingAmerica");
-
-            // Create a retrieve operation that takes a entity.
-            TableOperation retrieveComp = TableOperation.Retrieve<CompEntity>(compName, Date);
+            CloudTable rmaCompTable = tableClient.GetTableReference("rmaForecastingAmerica4col");
 
             // Construct the query operation for all customer entities where PartitionKey="Smith".
             TableQuery<CompEntity> query = new TableQuery<CompEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, compName));
@@ -47,8 +44,9 @@ namespace rmaWebApp
             foreach (CompEntity entity in rmaCompTable.ExecuteQuery(query))
             {
                 //Response.Write("<br />" + entity.PartitionKey);
-                Response.Write("<br />" + entity.RowKey);
-                Response.Write("<br />" + entity.Amount);
+                Response.Write("<br />" + entity.RowKey + ":" + Math.Round(Convert.ToDouble(entity.IW), 3) + "," + Math.Round(Convert.ToDouble(entity.All), 3));
+                //Response.Write("<br />" + entity.IW);
+                //Response.Write("<br />" + entity.All);
             }
 
             //Response.Write("Hello");
